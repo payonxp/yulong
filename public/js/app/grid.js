@@ -10,7 +10,7 @@ define( function() {
 
             let table = document.createElement("table");
             let header = document.createElement("tr"); // append header
-            Object.keys(obj).forEach((key) => {
+            Object.keys(obj).filter((o) => !o.startsWith('_')).forEach((key) => {
                 let td = document.createElement("td");
                 td.innerText = key;
                 header.appendChild(td);
@@ -19,12 +19,15 @@ define( function() {
 
             let grid = document.createElement("tr"); // append data
             grid.setAttribute("v-for", "obj in objs");
-            Object.keys(obj).forEach((key) => {
+            Object.keys(obj).filter((o) => !o.startsWith('_')).forEach((key) => {
                 let td = document.createElement("td");
-                td.innerText = "{{obj." + obj["key"] + "}}";
+                td.innerText = "{{obj." + key + "}}";
+                console.log(obj[key]);
                 grid.appendChild(td);
             });
             table.appendChild(grid);
+
+            parent.appendChild(table);
         }
     }
 });

@@ -11,7 +11,7 @@ requirejs.config({
 requirejs(['app/grid'], function(grid) {
     let url = '/instance';
 
-    let storage = {
+    let Storage = {
         fetch: function() {
             let result;
             let queryParam = {};
@@ -42,11 +42,14 @@ requirejs(['app/grid'], function(grid) {
         data: {
             objs: []
         },
-        created: () => this.query(),
+        created: function () {
+            this.query();
+        },
         methods: {
             query: function(){
-                this.objs = taskStorage.fetch();
-                grid.initGrid(document.getElementById("app"), this.objs[0]);
+                let data = Storage.fetch();
+                grid.initGrid(document.getElementById("app"), data[0]);
+                this.objs = data;
             },
         }
     });
