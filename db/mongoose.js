@@ -2,7 +2,15 @@
  * Created by morroc on 2017/7/10.
  */
 let mongoose = require('mongoose');
-mongoose.connect('mongodb://115.28.101.55/yulong/');
+let fs = require('fs');
+let str = fs.readFileSync('db.json');
+let obj = JSON.parse(str);
+
+if (obj.mongodb === null) {
+    console.log("no connection string");
+}
+
+mongoose.connect(obj.mongodb);
 
 let Schema = mongoose.Schema;
 

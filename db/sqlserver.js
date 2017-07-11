@@ -12,10 +12,10 @@ let dbConnector = {};
 let str = fs.readFileSync('db.json');
 let obj = JSON.parse(str);
 
-if (obj.connStr === null) {
+if (obj.sqlServer === null) {
     console.log("no connection string");
 }
-let connStr = obj.connStr;
+let connStr = obj.sqlServer;
 sql.open(connStr, function (err, conn) {
     if (err) {
         console.log(err);
