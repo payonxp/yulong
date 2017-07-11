@@ -4,12 +4,13 @@
 requirejs.config({
     baseUrl: 'js/lib',
     paths: {
-        app: '../app'
+        app: '../app',
     }
 });
 
 requirejs(['app/grid'], function(grid) {
     let url = '/instance';
+    let name = 'instance';
 
     let Storage = {
         fetch: function() {
@@ -48,7 +49,8 @@ requirejs(['app/grid'], function(grid) {
         methods: {
             query: function(){
                 let data = Storage.fetch();
-                grid.initGrid(document.getElementById("app"), data[0]);
+                grid.initGrid(document.getElementById("app"), data[0], name);
+                document.getElementById(name).className = "table table-striped";
                 this.objs = data;
             },
         }
