@@ -3,17 +3,19 @@
  */
 define( function() {
     return {
-        initGrid: function (parent, obj, id) {
-            if (obj === null) {
+        initGrid: function (table, obj, collection) {                // generate vue template for table
+            if (obj === null || table === null) {
                 return;
             }
-            let table = document.createElement("table");
-            table.setAttribute("id", id);
-            let header = document.createElement("tr"); // append header
-            let grid = document.createElement("tr"); // append data
-            grid.setAttribute("v-for", "obj in objs");
+
+            let thead = document.createElement("thead"); // append header
+            let header = document.createElement("tr");
+            let tbody = document.createElement("tbody"); // append data
+            let grid = document.createElement("tr");
+            grid.setAttribute("v-for", "obj in " + collection);
+            // loop obj's keys & filter those start with '_' like '_id', '__v'
             Object.keys(obj).filter((o) => !o.startsWith('_')).forEach((key) => {
-                let tdh = document.createElement("td");
+                let tdh = document.createElement("th");
                 tdh.innerText = key;
                 header.appendChild(tdh);
                 let td = document.createElement("td");
@@ -21,10 +23,11 @@ define( function() {
                 grid.appendChild(td);
             });
 
-            table.appendChild(header);
-            table.appendChild(grid);
+            thead.appendChild(header);
+            tbody.appendChild(grid);
 
-            parent.appendChild(table);
+            table.appendChild(thead);
+            table.appendChild(tbody);
         }
     }
 });

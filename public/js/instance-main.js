@@ -41,7 +41,7 @@ requirejs(['app/grid'], function(grid) {
     let app = new Vue({
         el: '#app',
         data: {
-            objs: []
+            instances: []
         },
         created: function () {
             this.query();
@@ -49,9 +49,9 @@ requirejs(['app/grid'], function(grid) {
         methods: {
             query: function(){
                 let data = Storage.fetch();
-                grid.initGrid(document.getElementById("app"), data[0], name);
-                document.getElementById(name).className = "table table-striped";
-                this.objs = data;
+                let table = document.getElementById(name);
+                grid.initGrid(table, data[0], "instances");
+                this.instances = data;
             },
         }
     });
