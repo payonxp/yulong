@@ -3,6 +3,11 @@
  */
 define( function() {
     return {
+        /*
+        * @param {DOM Object} table node
+        * @param {Object} data object
+        * @param {String} vue data key
+        * */
         initGrid: function (table, obj, collection) {                // generate vue template for table
             if (obj === null || table === null) {
                 return;

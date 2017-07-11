@@ -26,16 +26,26 @@ requirejs(['app/grid'], function(grid) {
             });
             return result;
         },
-        save: function(tasks) {
+        add: function(ins) {
             $.ajax({
                 type: 'POST',
-                url: url,
+                url: url + "/add",
                 dataType: 'json',
                 contentType: 'application/json',
-                data: JSON.stringify(tasks),
+                data: JSON.stringify(ins),
                 complete: (msg) => console.log(msg)
             })
         },
+        update: function(ins) {
+            $.ajax({
+                type: 'POST',
+                url: url + "/update",
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(ins),
+                complete: (msg) => console.log(msg)
+            })
+        }
     };
 
     let app = new Vue({
@@ -49,10 +59,27 @@ requirejs(['app/grid'], function(grid) {
         methods: {
             query: function(){
                 let data = Storage.fetch();
-                let table = document.getElementById(name);
-                grid.initGrid(table, data[0], "instances");
+                grid.initGrid(document.getElementById(name), data[0], "instances");
                 this.instances = data;
             },
+            add: function(ins) {
+                Storage.add(ins);
+            }
+        },
+        watch: {
+            instances: {
+                handler: function(val, oldVal) {
+                    for (let i = 0;i< val.length; i++) {
+                        if (val[i] !== oldVal[i]) {
+                            if (!val[i]._dirty)
+                                val[i]._dirty = true;
+                            else
+                                Storage.update(val[i]);
+                        }
+                    }
+                },
+                deep:true
+            }
         }
     });
 });

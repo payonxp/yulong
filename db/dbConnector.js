@@ -23,19 +23,13 @@ sql.open(connStr, function (err, conn) {
         console.log("sqlserver connect success.");
         dbConnector.query = function (q, cb) {
             conn.query(q, function (err, res) {
-                if (err) {
-                    console.log(err);
-                }
-                cb(res);
+                cb(err, res);
             });
         };
 
         dbConnector.preparedQuery = function (q, p, cb) {
             conn.query(q, p, function (err, res) {
-                if (err) {
-                    console.log(err);
-                }
-                cb(res);
+                cb(err, res);
             });
         };
 
