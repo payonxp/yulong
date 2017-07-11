@@ -5,15 +5,14 @@ let dbConnector = require("./dbConnector");
 let util = require("util");
 let sqlserver_api = {};
 
-sqlserver_api.model = function (name, table, pk) {
-    if (name === null || table === null || pk === null) {
+sqlserver_api.model = function (name, table) {
+    if (name === null || table === null) {
         console.log("model param is null");
         return;
     }
 
     let m = {};
     m.table = table;
-    m.pk = pk;
     m.emf = false;
 
     // TODO: SQL SERVER API INSERT

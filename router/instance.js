@@ -7,7 +7,7 @@ let instance = express.Router();
 let mongoose_api = require('../db/mongoose.js');
 let sqlserver_api = require('../db/sqlserverapi.js');
 
-sqlserver_api.model("Instance", "[dbo].[T_INSTANCE]", "NAME");
+sqlserver_api.model("Instance", "[dbo].[T_INSTANCE]");
 sqlserver_api.Instance.enableMongooseFilter();
 
 instance.get('/', (req, res) => {
@@ -50,11 +50,5 @@ instance.post('/add', (req, res) => {
     });
 });
 
-instance.get('/sqltest', (req, res) => {
-    sqlserver_api.model("instance", "[dbo].[T_INSTANCE]", "NAME");
-    sqlserver_api.instance.find({NAME: "SL901 PROD", TECHNOLOGY: "Mongoose 9.03"}, (err, obj) => {
-        res.send(JSON.stringify(obj));
-    });
-});
 
 module.exports = instance;
