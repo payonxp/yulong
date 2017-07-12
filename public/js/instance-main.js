@@ -22,7 +22,7 @@ requirejs(['app/grid'], function(grid) {
                 dataType: 'json',
                 async: false,
                 data: queryParam,
-                success: (data) => result = data
+                success: (data) => result = data.data
             });
             return result;
         },

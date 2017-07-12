@@ -10,6 +10,8 @@ app.use(bodyParser.json()); // use application json
 app.use(express.static('public')); // set static file path
 
 // routers
+let test = require('./router/test.js');
+app.use('/test', test);
 let instance = require('./router/instance.js');
 app.use('/instance', instance);
 

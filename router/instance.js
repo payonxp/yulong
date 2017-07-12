@@ -11,9 +11,17 @@ sqlserver_api.model("Instance", "[dbo].[T_INSTANCE]");
 
 instance.get('/', (req, res) => {
     sqlserver_api.Instance.find((err, ins) => {
-        if (err)
-            console.log(err);
-        res.send(JSON.stringify(ins));
+        if (err) {
+            res.send(JSON.stringify({
+                msg: "error",
+                data: err
+            }));
+        }
+
+        res.send(JSON.stringify({
+            msg: "success",
+            data: ins
+        }));
     });
 });
 
@@ -24,7 +32,7 @@ instance.post('/update', (req, res) => {
         if (err)
             res.send(JSOn.stringify({
                 msg: "error",
-                err: err
+                data: err
             }));
         res.send(JSON.stringify({
             msg: "success",
@@ -40,7 +48,7 @@ instance.post('/add', (req, res) => {
         if (err)
             res.send(JSOn.stringify({
                 msg: "error",
-                err: err
+                data: err
             }));
         res.send(JSON.stringify({
             msg: "success",

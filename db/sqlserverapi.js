@@ -5,7 +5,7 @@ let dbConnector = require("./dbConnector");
 let util = require("util");
 let sqlserver_api = {};
 
-// TODO: unit test
+// TODO: make filter promise
 
 sqlserver_api.model = function (name, table) {
     if (name === null || table === null) {
@@ -21,7 +21,7 @@ sqlserver_api.model = function (name, table) {
     * @param {Object} new object
     * @param {Function} callback
     * @param {Function} result attribute filter
-    * @param {Function} object preprocessor
+    * @param {Promise} object preprocessor
     * */
     m.insert = function (obj, cb, Filter, PreProcessor) {
         if (!obj) {
@@ -29,14 +29,14 @@ sqlserver_api.model = function (name, table) {
         }
 
         if (PreProcessor) {
-            PreProcessor(obj);
+            PreProcessor(obj).then((o) => obj = o);
         }
 
         let params = [];
         for (let key in obj) {
             params.push(obj[key]);
         }
-        dbConnector.preparedQuery(generateInsertQuery(this.table, obj, oldObj), params, function(err, objs) {
+        dbConnector.preparedQuery(generateInsertQuery(this.table, obj), params, function(err, objs) {
             if (Filter) {
                 objs.forEach((o) => Filter(o));
             }
@@ -50,7 +50,7 @@ sqlserver_api.model = function (name, table) {
     * @param {Object} old object
     * @param {Function} callback
     * @param {Function} result attribute filter
-    * @param {Function} object preprocessor
+    * @param {Promise} object preprocessor
     * */
     m.update = function (obj, oldObj, cb, Filter, PreProcessor) {
         if (!obj || !oldObj) {
@@ -59,7 +59,7 @@ sqlserver_api.model = function (name, table) {
         }
 
         if (PreProcessor) {
-            PreProcessor(obj);
+            PreProcessor(obj).then((o) => obj = o);
         }
 
         let params = [];
@@ -67,7 +67,7 @@ sqlserver_api.model = function (name, table) {
             params.push(obj[key]);
         }
         for (let key in oldObj) {
-            param.push(oldObj[key]);
+            params.push(oldObj[key]);
         }
         dbConnector.preparedQuery(generateUpdateQuery(this.table, obj, oldObj), params, function(err, objs) {
             if (Filter) {
@@ -82,7 +82,7 @@ sqlserver_api.model = function (name, table) {
     * @param {Object|null|undefined} Object as Query Param
     * @param {Function} callback
     * @param {Function} result attribute filter
-    * @param {Function} object preprocessor
+    * @param {Promise} object preprocessor
     * */
     m.find = function (obj, cb, Filter, PreProcessor) {
         if (util.isFunction(obj)) {
@@ -90,7 +90,7 @@ sqlserver_api.model = function (name, table) {
             obj = null;
         }
         if (PreProcessor) {
-            PreProcessor(obj);
+            PreProcessor(obj).then((o) => obj = o);
         }
 
         let params = [];
@@ -110,7 +110,7 @@ sqlserver_api.model = function (name, table) {
     * @param {Object} object to delete
     * @param {Function} callback
     * @param {Function} result attribute filter
-    * @param {Function} object preprocessor
+    * @param {Promise} object preprocessor
     * */
     m.delete = function (obj, cb, Filter, PreProcessor) {
         if (!obj) {
@@ -118,7 +118,7 @@ sqlserver_api.model = function (name, table) {
         }
 
         if (PreProcessor) {
-            PreProcessor(obj);
+            PreProcessor(obj).then((o) => obj = o);
         }
 
         let params = [];
