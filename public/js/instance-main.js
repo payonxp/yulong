@@ -36,13 +36,17 @@ requirejs(['app/grid'], function(grid) {
                 complete: (msg) => console.log(msg)
             })
         },
-        update: function(ins) {
+        update: function(ins, oldIns) {
+            let data = {
+                newIns: ins,
+                oldIns: oldIns
+            };
             $.ajax({
                 type: 'POST',
                 url: url + "/update",
                 dataType: 'json',
                 contentType: 'application/json',
-                data: JSON.stringify(ins),
+                data: JSON.stringify(data),
                 complete: (msg) => console.log(msg)
             })
         }
@@ -74,7 +78,7 @@ requirejs(['app/grid'], function(grid) {
                             if (!val[i]._dirty)
                                 val[i]._dirty = true;
                             else
-                                Storage.update(val[i]);
+                                Storage.update(val[i], oldVal[i]);
                         }
                     }
                 },
