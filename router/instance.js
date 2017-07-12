@@ -8,7 +8,6 @@ let mongoose_api = require('../db/mongoose.js');
 let sqlserver_api = require('../db/sqlserverapi.js');
 
 sqlserver_api.model("Instance", "[dbo].[T_INSTANCE]");
-sqlserver_api.Instance.enableMongooseFilter();
 
 instance.get('/', (req, res) => {
     sqlserver_api.Instance.find((err, ins) => {
