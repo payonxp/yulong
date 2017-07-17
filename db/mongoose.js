@@ -1,6 +1,9 @@
 /**
  * Created by morroc on 2017/7/10.
  */
+
+// mongodb ODM, front-end test use only
+
 let mongoose = require('mongoose');
 let fs = require('fs');
 let str = fs.readFileSync('db.json');

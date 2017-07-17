@@ -6,56 +6,60 @@ let instance = express.Router();
 
 let mongoose_api = require('../db/mongoose.js');
 let sqlserver_api = require('../db/sqlserverapi.js');
+let mongooseUtil = require('../db/mongooseUtil');
 
 sqlserver_api.model("Instance", "[dbo].[T_INSTANCE]");
 
 instance.get('/', (req, res) => {
-    sqlserver_api.Instance.find((err, ins) => {
+    sqlserver_api.Instance.find(null, (err, ins) => {
         if (err) {
             res.send(JSON.stringify({
                 msg: "error",
                 data: err
             }));
+        } else {
+            res.send(JSON.stringify({
+                msg: "success",
+                data: ins
+            }));
         }
-
-        res.send(JSON.stringify({
-            msg: "success",
-            data: ins
-        }));
-    });
+    }, mongooseUtil.Filter);
 });
 
 instance.post('/update', (req, res) => {
     let ins = {};
     Object.keys(req.body).filter((o) => !o.startsWith('_')).forEach((key) => ins[key] = req.body[key]);
     mongoose_api.Instance.update(ins, (err, ins) => {
-        if (err)
+        if (err) {
             res.send(JSOn.stringify({
                 msg: "error",
                 data: err
             }));
-        res.send(JSON.stringify({
-            msg: "success",
-            data: ins
-        }));
-    });
+        } else {
+            res.send(JSON.stringify({
+                msg: "success",
+                data: ins
+            }));
+        }
+    }, mongooseUtil.Filter);
 });
 
 instance.post('/add', (req, res) => {
     let ins = {};
     Object.keys(req.body).filter((o) => !o.startsWith('_')).forEach((key) => ins[key] = req.body[key]);
     mongoose_api.Instance.insert(ins, (err, ins) => {
-        if (err)
+        if (err) {
             res.send(JSOn.stringify({
                 msg: "error",
                 data: err
             }));
-        res.send(JSON.stringify({
-            msg: "success",
-            data: ins
-        }));
-    });
+        } else {
+            res.send(JSON.stringify({
+                msg: "success",
+                data: ins
+            }));
+        }
+    }, mongooseUtil.Filter);
 });
-
 
 module.exports = instance;
