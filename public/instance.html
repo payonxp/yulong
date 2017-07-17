@@ -32,13 +32,7 @@
 
                     <div class="modal-footer">
                         <slot name="footer">
-                            <button class="modal-delete-button btn btn-danger">
-                                DELETE
-                            </button>
-                            <button class="modal-default-button btn btn-default" @click="$emit('close')">
-                                CANCEL
-                            </button>
-                            <button class="modal-default-button btn btn-primary" @click="$emit('close')">
+                            <button class="modal-default-button btn btn-primary" @click="$emit('update')">
                                 OK
                             </button>
 
@@ -50,10 +44,21 @@
     </transition>
 </script>
 
-<div id="app">
-    <modal v-if="showModal" @close="showModal = false">
+<div id="app" class="container">
+    <modal v-if="showModal">
         <h3 slot="header">Instance Edit</h3>
         <div slot="body" id="modal-body"></div>
+        <div slot="footer">
+            <button class="modal-delete-button btn btn-danger" @click="$emit('delete', current)">
+                DELETE
+            </button>
+            <button class="modal-default-button btn btn-default" @click="$emit('close', current)">
+                CANCEL
+            </button>
+            <button class="modal-default-button btn btn-primary" @click="$emit('update', current)">
+                OK
+            </button>
+        </div>
     </modal>
     <table id="instance" class="table table-hover"></table>
 </div>

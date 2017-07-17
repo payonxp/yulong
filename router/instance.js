@@ -28,8 +28,10 @@ instance.get('/', (req, res) => {
 
 instance.post('/update', (req, res) => {
     let ins = {};
-    Object.keys(req.body).filter((o) => !o.startsWith('_')).forEach((key) => ins[key] = req.body[key]);
-    mongoose_api.Instance.update(ins, (err, ins) => {
+    Object.keys(req.body.newIns).filter((o) => !o.startsWith('_')).forEach((key) => ins[key] = req.body.newIns[key]);
+    let oldIns = {};
+    Object.keys(req.body.oldIns).filter((o) => !o.startsWith('_')).forEach((key) => oldIns[key] = req.body.oldIns[key]);
+    sqlserver_api.Instance.update(ins, oldIns, (err, data) => {
         if (err) {
             res.send(JSOn.stringify({
                 msg: "error",
@@ -38,7 +40,7 @@ instance.post('/update', (req, res) => {
         } else {
             res.send(JSON.stringify({
                 msg: "success",
-                data: ins
+                data: data
             }));
         }
     }, mongooseUtil.Filter);

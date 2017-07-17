@@ -49,6 +49,7 @@ requirejs(['app/grid', 'app/modal'], function(grid, modal) {
                 newIns: ins,
                 oldIns: oldIns
             };
+            console.log(data);
             $.ajax({
                 type: 'POST',
                 url: url + "/update",
@@ -75,10 +76,24 @@ requirejs(['app/grid', 'app/modal'], function(grid, modal) {
         data: {
             instances : [],
             showModal : false,
-            current: null
+            current: null,
+            currentCache: null
         },
         created: function () {
             this.query();
+            this.$on('delete', function(obj) {
+                this.del(obj);
+            });
+            this.$on('close', function(obj) {
+                obj = {};
+                Object.keys(this.currentCache).forEach((key) => obj[key] = this.currentCache[key] );
+                this.showModal = false;
+            });
+            this.$on('update', function(obj) {
+                this.update(obj, this.currentCache);
+                this.showModal = false;
+            });
+
         },
         methods: {
             query: function(){
@@ -92,22 +107,17 @@ requirejs(['app/grid', 'app/modal'], function(grid, modal) {
             },
             del: function (ins) {
                 Storage.del(ins);
+            },
+            update: function (ins, oldIns) {
+                Storage.update(ins, oldIns);
+            },
+            cache: function(ins) {
+                this.currentCache = {};
+                Object.keys(ins).forEach((key) => this.currentCache[key] = ins[key]);
             }
         },
         watch: {
-            instances: {
-                handler: function(val, oldVal) {
-                    for (let i = 0;i< val.length; i++) {
-                        if (val[i] !== oldVal[i]) {
-                            if (!val[i]._dirty)
-                                val[i]._dirty = true;
-                            else
-                                Storage.update(val[i], oldVal[i]);
-                        }
-                    }
-                },
-                deep:true
-            }
+
         }
     });
 });

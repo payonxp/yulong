@@ -24,7 +24,7 @@ define( function() {
                 tdh.innerText = key;
                 header.appendChild(tdh);
                 let td = document.createElement("td");
-                td.setAttribute("v-on:click", "showModal=true;current=obj;");
+                td.setAttribute("v-on:click", "showModal=true;current=obj;cache(obj)");
                 td.innerText = "{{obj." + key + "}}";
                 grid.appendChild(td);
             });

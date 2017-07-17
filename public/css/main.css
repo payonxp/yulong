@@ -76,3 +76,10 @@
     display: block;
     margin-top: 5px;
 }
+
+.container {
+    width: 90%;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
