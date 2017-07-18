@@ -18,15 +18,14 @@ requirejs(['app/grid', 'app/modal'], function(grid, modal) {
     let name = 'instance';
 
     let Storage = {
-        fetch: function() {
+        fetch: function(ins) {
             let result;
-            let queryParam = {};
             $.ajax({
                 type: 'GET',
                 url: url,
                 dataType: 'json',
                 async: false,
-                data: queryParam,
+                data: ins,
                 success: (data) => {
                     result = data.data;
                 }
@@ -76,10 +75,15 @@ requirejs(['app/grid', 'app/modal'], function(grid, modal) {
             showModal : false,
             showAdd: false,
             current: null,
-            currentCache: null
+            currentCache: null,
+            Filter: {}
         },
         created: function () {
-            this.query();
+            let data = Storage.fetch();
+            grid.initGrid(document.getElementById(name), data[0], "instances");
+            modal.initModal(document.getElementById("edit-modal"), data[0]);
+            modal.initModal(document.getElementById("add-modal"), data[0]);
+            this.instances = data;
             this.$on('delete', function(obj) {
                 this.del(obj);
                 this.showModal = false;
@@ -100,14 +104,14 @@ requirejs(['app/grid', 'app/modal'], function(grid, modal) {
             this.$on('close-add', function (obj) {
                 this.showAdd = false;
             });
+            this.$on('filter', function () {
+                this.query(this.Filter);
+            });
         },
         methods: {
-            query: function(){
-                let data = Storage.fetch();
-                grid.initGrid(document.getElementById(name), data[0], "instances");
-                modal.initModal(document.getElementById("edit-modal"), data[0]);
-                modal.initModal(document.getElementById("add-modal"), data[0]);
-                this.instances = data;
+            query: function(ins){
+                this.instances = Storage.fetch(ins);
+                console.log(this.instances);
             },
             add: function(ins) {
                 Storage.add(ins);
@@ -123,9 +127,6 @@ requirejs(['app/grid', 'app/modal'], function(grid, modal) {
                 Object.keys(ins).forEach((key) => this.currentCache[key] = ins[key]);
             }
         },
-        watch: {
-
-        }
     });
 });
 

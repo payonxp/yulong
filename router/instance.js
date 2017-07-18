@@ -4,14 +4,15 @@
 let express = require('express');
 let instance = express.Router();
 
-let mongoose_api = require('../db/mongoose.js');
 let sqlserver_api = require('../db/sqlserverapi.js');
 let mongooseUtil = require('../db/mongooseUtil');
 
 sqlserver_api.model("Instance", "[dbo].[T_INSTANCE]");
 
 instance.get('/', (req, res) => {
-    sqlserver_api.Instance.find(null, (err, ins) => {
+    let ins = {};
+    Object.keys(req.query).filter((o) => !o.startsWith('_')).forEach((key) => ins[key] = req.query[key]);
+    sqlserver_api.Instance.find(req.query, (err, ins) => {
         if (err) {
             res.send(JSON.stringify({
                 msg: "error",

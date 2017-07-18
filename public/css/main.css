@@ -121,3 +121,8 @@ body {
 .add-btn:hover {
     color: #9d9d9d;
 }
+
+.filter-input {
+    width: 100%;
+    display: inline-block;
+}

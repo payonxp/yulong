@@ -37,7 +37,7 @@ sqlserver_api.model = function (name, table) {
             params.push(obj[key]);
         }
         dbConnector.preparedQuery(generateInsertQuery(this.table, obj), params, function(err, objs) {
-            if (Filter) {
+            if (Filter && objs) {
                 objs.forEach((o) => Filter(o));
             }
             cb(err, objs);
@@ -70,7 +70,7 @@ sqlserver_api.model = function (name, table) {
             params.push(oldObj[key]);
         }
         dbConnector.preparedQuery(generateUpdateQuery(this.table, obj, oldObj), params, function(err, objs) {
-            if (Filter) {
+            if (Filter && objs) {
                 objs.forEach((o) => Filter(o));
             }
             cb(err, objs);
@@ -85,7 +85,7 @@ sqlserver_api.model = function (name, table) {
     * @param {Promise} object preprocessor
     * */
     m.find = function (obj, cb, Filter, PreProcessor) {
-        if (util.isFunction(obj)) {
+        if (util.isFunction(obj) || obj === {}) {
             cb = obj;
             obj = null;
         }
@@ -95,10 +95,10 @@ sqlserver_api.model = function (name, table) {
 
         let params = [];
         for (let key in obj) {
-            params.push(obj[key]);
+            params.push("%"+obj[key]+"%");
         }
         dbConnector.preparedQuery(generateSelectQuery(this.table, obj), params, function(err, objs) {
-            if (Filter) {
+            if (Filter && objs) {
                 objs.forEach((o) => Filter(o));
             }
             cb(err, objs);
@@ -126,7 +126,7 @@ sqlserver_api.model = function (name, table) {
             params.push(obj[key]);
         }
         dbConnector.preparedQuery(generateDeleteQuery(this.table, obj), params, function (err, objs) {
-            if (Filter) {
+            if (Filter && objs) {
                 objs.forEach((o) => Filter(o));
             }
             cb(err, objs);
@@ -139,11 +139,15 @@ sqlserver_api.model = function (name, table) {
 
 function generateSelectQuery(table, obj) {
     let q ;
-    if (!obj) {
+    let count = 0;
+    for (let key in obj) {
+        count++;
+    }
+    if (!obj || count === 0) {
         q = 'SELECT * from '+ table;
     } else {
         q = 'SELECT * from ' + table + ' WHERE ';
-        Object.keys(obj).forEach((key) => q += key + "=? and ");
+        Object.keys(obj).forEach((key) => q += key + " like ? and ");
         let pos = q.lastIndexOf("and");
         q = q.substr(0, pos);
     }

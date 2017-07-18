@@ -18,8 +18,20 @@ define( function() {
             let tbody = document.createElement("tbody"); // append data
             let grid = document.createElement("tr");
             grid.setAttribute("v-for", "obj in " + collection);
+
+            let tfilter = document.createElement("tr");
+
             // loop obj's keys & filter those start with '_' like '_id', '__v'
             Object.keys(obj).filter((o) => !o.startsWith('_')).forEach((key) => {
+                let filter = document.createElement("th");
+                let filter_input = document.createElement("input");
+                filter_input.setAttribute("type", "text");
+                filter_input.setAttribute("v-model", "Filter."+key);
+                filter_input.setAttribute("v-on:blur","$emit('filter', Filter)");
+                filter_input.className = "filter-input";
+                filter.appendChild(filter_input);
+                tfilter.appendChild(filter);
+
                 let tdh = document.createElement("th");
                 tdh.innerText = key;
                 header.appendChild(tdh);
@@ -33,6 +45,7 @@ define( function() {
             plus.innerHTML = "<button class='btn add-btn' v-on:click='showAdd=true;current={}'>+</button>";
             header.appendChild(plus);
 
+            thead.appendChild(tfilter);
             thead.appendChild(header);
             tbody.appendChild(grid);
 
