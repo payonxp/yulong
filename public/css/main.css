@@ -83,3 +83,41 @@
     right: 0;
     margin: auto;
 }
+
+.left-menu {
+    border-right: 2px solid rgba(0,0,0,0.1);
+    height: 100%;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+}
+
+.list-btn {
+    color: #000;
+    font-size: large;
+}
+
+.list-btn:hover {
+    color: #5bc0de;
+}
+
+.list-head {
+    font-size: large;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.add-btn {
+    background-color: #3c763d;
+    color: #ffffff;
+    border-radius: 16px;
+}
+
+.add-btn:hover {
+    color: #9d9d9d;
+}

@@ -29,7 +29,6 @@ requirejs(['app/grid', 'app/modal'], function(grid, modal) {
                 data: queryParam,
                 success: (data) => {
                     result = data.data;
-                    console.log(data.msg)
                 }
             });
             return result;
@@ -49,7 +48,6 @@ requirejs(['app/grid', 'app/modal'], function(grid, modal) {
                 newIns: ins,
                 oldIns: oldIns
             };
-            console.log(data);
             $.ajax({
                 type: 'POST',
                 url: url + "/update",
@@ -76,6 +74,7 @@ requirejs(['app/grid', 'app/modal'], function(grid, modal) {
         data: {
             instances : [],
             showModal : false,
+            showAdd: false,
             current: null,
             currentCache: null
         },
@@ -83,6 +82,7 @@ requirejs(['app/grid', 'app/modal'], function(grid, modal) {
             this.query();
             this.$on('delete', function(obj) {
                 this.del(obj);
+                this.showModal = false;
             });
             this.$on('close', function(obj) {
                 obj = {};
@@ -93,13 +93,20 @@ requirejs(['app/grid', 'app/modal'], function(grid, modal) {
                 this.update(obj, this.currentCache);
                 this.showModal = false;
             });
-
+            this.$on('add', function (obj) {
+                this.add(obj);
+                this.showAdd = false;
+            });
+            this.$on('close-add', function (obj) {
+                this.showAdd = false;
+            });
         },
         methods: {
             query: function(){
                 let data = Storage.fetch();
                 grid.initGrid(document.getElementById(name), data[0], "instances");
-                modal.initModal(document.getElementById("modal-body"), data[0]);
+                modal.initModal(document.getElementById("edit-modal"), data[0]);
+                modal.initModal(document.getElementById("add-modal"), data[0]);
                 this.instances = data;
             },
             add: function(ins) {

@@ -29,6 +29,10 @@ define( function() {
                 grid.appendChild(td);
             });
 
+            let plus = document.createElement("th");
+            plus.innerHTML = "<button class='btn add-btn' v-on:click='showAdd=true;current={}'>+</button>";
+            header.appendChild(plus);
+
             thead.appendChild(header);
             tbody.appendChild(grid);
 

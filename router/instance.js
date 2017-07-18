@@ -33,7 +33,7 @@ instance.post('/update', (req, res) => {
     Object.keys(req.body.oldIns).filter((o) => !o.startsWith('_')).forEach((key) => oldIns[key] = req.body.oldIns[key]);
     sqlserver_api.Instance.update(ins, oldIns, (err, data) => {
         if (err) {
-            res.send(JSOn.stringify({
+            res.send(JSON.stringify({
                 msg: "error",
                 data: err
             }));
@@ -49,9 +49,9 @@ instance.post('/update', (req, res) => {
 instance.post('/add', (req, res) => {
     let ins = {};
     Object.keys(req.body).filter((o) => !o.startsWith('_')).forEach((key) => ins[key] = req.body[key]);
-    mongoose_api.Instance.insert(ins, (err, ins) => {
+    sqlserver_api.Instance.insert(ins, (err, ins) => {
         if (err) {
-            res.send(JSOn.stringify({
+            res.send(JSON.stringify({
                 msg: "error",
                 data: err
             }));
@@ -64,4 +64,21 @@ instance.post('/add', (req, res) => {
     }, mongooseUtil.Filter);
 });
 
+instance.post('/delete', (req, res) => {
+    let ins = {};
+    Object.keys(req.body).filter((o) => !o.startsWith('_')).forEach((key) => ins[key] = req.body[key]);
+    sqlserver_api.Instance.delete(ins, (err, ins) => {
+        if (err) {
+            res.send(JSON.stringify({
+                msg: "error",
+                data: err
+            }));
+        } else {
+            res.send(JSON.stringify({
+                msg: "success",
+                data: ins
+            }));
+        }
+    }, mongooseUtil.Filter);
+});
 module.exports = instance;
