@@ -8,7 +8,7 @@ define( function() {
         * @param {Object} data object
         * @param {String} vue data key
         * */
-        initGrid: function (table, obj, collection) {                // generate vue template for table
+        initGrid: function (table, obj, collection) {     // generate vue template for table
             if (obj === null || table === null) {
                 return;
             }
