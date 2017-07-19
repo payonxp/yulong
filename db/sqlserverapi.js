@@ -7,7 +7,7 @@ let sqlserver_api = {};
 
 // TODO: make filter promise
 
-sqlserver_api.model = function (name, table) {
+sqlserver_api.model = function (name, table, pk) {
     if (name === null || table === null) {
         console.log("model param is null");
         return;
@@ -15,6 +15,7 @@ sqlserver_api.model = function (name, table) {
 
     let m = {};
     m.table = table;
+    m.pk = pk;
 
     /*
     * Process SQL-Server Insert
@@ -66,10 +67,8 @@ sqlserver_api.model = function (name, table) {
         for (let key in obj) {
             params.push(obj[key]);
         }
-        for (let key in oldObj) {
-            params.push(oldObj[key]);
-        }
-        dbConnector.preparedQuery(generateUpdateQuery(this.table, obj, oldObj), params, function(err, objs) {
+        params.push(oldObj[this.pk]);
+        dbConnector.preparedQuery(generateUpdateQueryWithPk(this.table, this.pk, obj), params, function(err, objs) {
             if (Filter && objs) {
                 objs.forEach((o) => Filter(o));
             }
@@ -122,10 +121,8 @@ sqlserver_api.model = function (name, table) {
         }
 
         let params = [];
-        for (let key in obj) {
-            params.push(obj[key]);
-        }
-        dbConnector.preparedQuery(generateDeleteQuery(this.table, obj), params, function (err, objs) {
+        params.push(obj[this.pk]);
+        dbConnector.preparedQuery(generateDeleteQueryWithPk(this.table, this.pk), params, function (err, objs) {
             if (Filter && objs) {
                 objs.forEach((o) => Filter(o));
             }
@@ -166,11 +163,26 @@ function generateUpdateQuery(table, obj, oldObj) {
     return q;
 }
 
+function generateUpdateQueryWithPk(table, pk, obj) {
+    let q = 'UPDATE ' + table + ' SET ';
+    Object.keys(obj).forEach((key) => q += key + "=? , ");
+    let pos = q.lastIndexOf(",");
+    q = q.substr(0, pos);
+    q += " WHERE " + pk + ' = ?';
+    return q;
+}
+
 function generateDeleteQuery(table, obj) {
     let q = 'DELETE ' + table + ' WHERE ';
     Object.keys(obj).forEach((key) => q += key + "=? and ");
     let pos = q.lastIndexOf("and");
     q = q.substr(0, pos);
+    return q;
+}
+
+function generateDeleteQueryWithPk(table, pk) {
+    let q = 'DELETE ' + table + ' WHERE ';
+    q += pk + ' = ?';
     return q;
 }
 

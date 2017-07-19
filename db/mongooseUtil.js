@@ -2,9 +2,15 @@
  * Created by tpeng on 2017/7/12.
  */
 let dbConnector = require('./dbConnector');
+let util = require('util');
 
 let MongooseUtil = {
     Filter: function(obj) {
+        for (let key in obj) {
+            if (util.isDate(obj[key])) {
+                obj[key] = obj[key].toLocaleString();
+            }
+        }
         delete obj.UpdatedBy;
         delete obj.CreatedBy;
         delete obj.RowPointer;

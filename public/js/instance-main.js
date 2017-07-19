@@ -39,7 +39,13 @@ requirejs(['app/grid', 'app/modal'], function(grid, modal) {
                 dataType: 'json',
                 contentType: 'application/json',
                 data: JSON.stringify(ins),
-                complete: (msg) => console.log(msg)
+                complete: (msg) => {
+                    console.log(msg);
+                    if (msg.responseJSON.msg === "success"){
+                        alert("Add instance success.");
+                        app.$emit("Success", ins);
+                    }
+                }
             });
         },
         update: function(ins, oldIns) {
@@ -53,7 +59,13 @@ requirejs(['app/grid', 'app/modal'], function(grid, modal) {
                 dataType: 'json',
                 contentType: 'application/json',
                 data: JSON.stringify(data),
-                complete: (msg) => console.log(msg)
+                complete: (msg) => {
+                    console.log(msg);
+                    if (msg.responseJSON.msg === "success") {
+                        alert("Update instance success.");
+                        app.$emit("Success", ins);
+                    }
+                }
             });
         },
         del: function(ins) {
@@ -63,7 +75,13 @@ requirejs(['app/grid', 'app/modal'], function(grid, modal) {
                 dataType: 'json',
                 contentType: 'application/json',
                 data: JSON.stringify(ins),
-                complete: (msg) => console.log(msg)
+                complete: (msg) => {
+                    console.log(msg);
+                    if (msg.responseJSON.msg === "success") {
+                        alert("Delete instance success.");
+                        app.$emit("Success", ins);
+                    }
+                }
             });
         }
     };
@@ -106,6 +124,9 @@ requirejs(['app/grid', 'app/modal'], function(grid, modal) {
             });
             this.$on('filter', function () {
                 this.query(this.Filter);
+            });
+            this.$on('Success', function (obj) {
+                this.query();
             });
         },
         methods: {

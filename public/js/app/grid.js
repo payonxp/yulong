@@ -28,6 +28,7 @@ define( function() {
                 filter_input.setAttribute("type", "text");
                 filter_input.setAttribute("v-model", "Filter."+key);
                 filter_input.setAttribute("v-on:blur","$emit('filter', Filter)");
+                filter_input.setAttribute("placeholder", "Search...");
                 filter_input.className = "filter-input";
                 filter.appendChild(filter_input);
                 tfilter.appendChild(filter);

@@ -7,7 +7,7 @@ let instance = express.Router();
 let sqlserver_api = require('../db/sqlserverapi.js');
 let mongooseUtil = require('../db/mongooseUtil');
 
-sqlserver_api.model("Instance", "[dbo].[T_INSTANCE]");
+sqlserver_api.model("Instance", "[dbo].[T_INSTANCE]", "NAME");
 
 instance.get('/', (req, res) => {
     let ins = {};
