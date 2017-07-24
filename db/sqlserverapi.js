@@ -14,6 +14,7 @@ sqlserver_api.model = function (name, table, pk) {
     }
 
     let m = {};
+    m.name = name;
     m.table = table;
     m.pk = pk;
 
@@ -34,9 +35,7 @@ sqlserver_api.model = function (name, table, pk) {
         }
 
         let params = [];
-        for (let key in obj) {
-            params.push(obj[key]);
-        }
+        Object.keys(obj).forEach((key) => params.push(obj[key]));
         dbConnector.preparedQuery(generateInsertQuery(this.table, obj), params, function(err, objs) {
             if (Filter && objs) {
                 objs.forEach((o) => Filter(o));
@@ -64,9 +63,7 @@ sqlserver_api.model = function (name, table, pk) {
         }
 
         let params = [];
-        for (let key in obj) {
-            params.push(obj[key]);
-        }
+        Object.keys(obj).forEach((key) => params.push(obj[key]));
         params.push(oldObj[this.pk]);
         dbConnector.preparedQuery(generateUpdateQueryWithPk(this.table, this.pk, obj), params, function(err, objs) {
             if (Filter && objs) {
@@ -93,9 +90,7 @@ sqlserver_api.model = function (name, table, pk) {
         }
 
         let params = [];
-        for (let key in obj) {
-            params.push("%"+obj[key]+"%");
-        }
+        Object.keys(obj).forEach((key) => params.push("%"+obj[key]+"%"));
         dbConnector.preparedQuery(generateSelectQuery(this.table, obj), params, function(err, objs) {
             if (Filter && objs) {
                 objs.forEach((o) => Filter(o));
