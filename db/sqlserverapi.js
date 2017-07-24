@@ -2,6 +2,7 @@
  * Created by tpeng on 2017/7/11.
  */
 let dbConnector = require("./dbConnector");
+let subTable = require("./subtable");
 let util = require("util");
 let sqlserver_api = {};
 
@@ -17,6 +18,11 @@ sqlserver_api.model = function (name, table, pk) {
     m.name = name;
     m.table = table;
     m.pk = pk;
+
+    m.setupSubTable = function (sub_table, sub_model) {
+        sub_table(this, sub_table, sub_model);
+    };
+
 
     /*
     * Process SQL-Server Insert

@@ -86,3 +86,5 @@ let subTable = function (prime_model, sub_table, sub_model) {
     };
 
 };
+
+module.exports = subTable;
