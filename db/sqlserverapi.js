@@ -21,6 +21,8 @@ sqlserver_api.model = function (name, table, pk) {
     * Setup sub-table
     * @param {String} sub-table name
     * @param {Object} sub-model name
+    * @param {String} prime table foreign key
+    * @param {String} sub-table foreign key
     * */
     m.setupSubTable = function (sub_table, sub_model, pfk, sfk) {
         subTable(m, sub_table, sub_model, pfk, sfk);

@@ -1,25 +1,13 @@
-/**
- * Created by morroc on 2017/7/10.
- */
 let express = require('express');
-let instance = express.Router();
+let instance_repository = express.Router();
 
 let tableMgr = require('../db/tablemgr');
 let mongooseUtil = require('../db/mongooseUtil');
 
-let instance_cache = require('./instance_cache');
-let instance_data_source = require('./instance_data_source');
-let instance_repository = require('./instance_repository');
-
-instance.use('/cache', instance_cache);
-instance.use('/data_source', instance_data_source);
-instance.use('/repository', instance_repository);
-
-
-instance.get('/', (req, res) => {
+instance_repository.get('/', (req, res) => {
     let ins = {};
     Object.keys(req.query).filter((o) => !o.startsWith('_')).forEach((key) => ins[key] = req.query[key]);
-    tableMgr.Instance.find(ins, (err, ins) => {
+    tableMgr.Instance.Storage.find(ins, (err, objs) => {
         if (err) {
             res.send(JSON.stringify({
                 msg: "error",
@@ -28,18 +16,18 @@ instance.get('/', (req, res) => {
         } else {
             res.send(JSON.stringify({
                 msg: "success",
-                data: ins
+                data: objs
             }));
         }
-    }, mongooseUtil.Filter);
+    });
 });
 
-instance.post('/update', (req, res) => {
+instance_repository.post('/update', (req, res) => {
     let ins = {};
     Object.keys(req.body.newIns).filter((o) => !o.startsWith('_')).forEach((key) => ins[key] = req.body.newIns[key]);
     let oldIns = {};
     Object.keys(req.body.oldIns).filter((o) => !o.startsWith('_')).forEach((key) => oldIns[key] = req.body.oldIns[key]);
-    tableMgr.Instance.update(ins, oldIns, (err, data) => {
+    tableMgr.Instance.Storage.update(ins, oldIns, (err, data) => {
         if (err) {
             res.send(JSON.stringify({
                 msg: "error",
@@ -54,10 +42,10 @@ instance.post('/update', (req, res) => {
     }, mongooseUtil.Filter);
 });
 
-instance.post('/add', (req, res) => {
+instance_repository.post('/add', (req, res) => {
     let ins = {};
     Object.keys(req.body).filter((o) => !o.startsWith('_')).forEach((key) => ins[key] = req.body[key]);
-    tableMgr.Instance.insert(ins, (err, ins) => {
+    tableMgr.Instance.Storage.add(ins, (err, data) => {
         if (err) {
             res.send(JSON.stringify({
                 msg: "error",
@@ -66,16 +54,16 @@ instance.post('/add', (req, res) => {
         } else {
             res.send(JSON.stringify({
                 msg: "success",
-                data: ins
+                data: data
             }));
         }
     }, mongooseUtil.Filter, mongooseUtil.PreProcessor);
 });
 
-instance.post('/delete', (req, res) => {
+instance_repository.post('/delete', (req, res) => {
     let ins = {};
     Object.keys(req.body).filter((o) => !o.startsWith('_')).forEach((key) => ins[key] = req.body[key]);
-    tableMgr.Instance.delete(ins, (err, ins) => {
+    tableMgr.Instance.Storage.del(ins, (err, data) => {
         if (err) {
             res.send(JSON.stringify({
                 msg: "error",
@@ -84,9 +72,10 @@ instance.post('/delete', (req, res) => {
         } else {
             res.send(JSON.stringify({
                 msg: "success",
-                data: ins
+                data: data
             }));
         }
     }, mongooseUtil.Filter);
 });
-module.exports = instance;
+
+module.exports = instance_repository;
