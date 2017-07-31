@@ -7,7 +7,7 @@ let dataConnection = express.Router();
 let sqlserver_api = require('../db/sqlserverapi.js');
 let mongooseUtil = require('../db/mongooseUtil');
 
-sqlserver_api.model("DataConnection", "[dbo].[T_DATA_CONNECTION]", "NAME");
+
 
 dataConnection.get('/', (req, res) => {
     let dc = {};

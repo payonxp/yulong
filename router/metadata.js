@@ -7,8 +7,6 @@ let metadata = express.Router();
 let sqlserver_api = require('../db/sqlserverapi.js');
 let mongooseUtil = require('../db/mongooseUtil');
 
-sqlserver_api.model("Metadata", "[dbo].[T_METADATA]", "NAME");
-
 metadata.get('/', (req, res) => {
     let md = {};
     Object.keys(req.query).filter((o) => !o.startsWith('_')).forEach((key) => md[key] = req.query[key]);

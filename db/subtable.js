@@ -1,20 +1,24 @@
 let dbConnector = require('./dbConnector');
 
-let subTable = function (prime_model, sub_table, sub_model) {
+let subTable = function (prime_model, sub_table, sub_model, pfk, sfk) {
     prime_model[sub_model.name] = {
         subTable: sub_table,
         subModel: sub_model,
         primeModel: prime_model,
+        prime_fk: pfk,
+        sub_fk: sfk,
         find: function (obj, cb, Filter, Preprocessor) {
             if (Preprocessor) {
                 Preprocessor(obj);
             }
 
-            let q = 'SELECT ' + sub_model.pk + ' FROM ' + sub_table;
-            q += ' WHERE ' + sub_table + '.' + prime_model.pk + ' = ?';
+            let q = "SELECT * FROM " + sub_model.table;
+            q += "WHERE " + sub_model.table + "." + sub_model.pk + " in (";
+            q += "SELECT " + sub_table + "." + sfk + " FROM " + sub_table;
+            q += " WHERE " + sub_table + "." + pfk + " = ? )";
 
-            dbConnector.preparedQuery(q, obj[prime_model.pk], (err, objs) => {
-                if (objs && Filter) {
+            dbConnector.preparedQuery(q, [obj[prime_model.pk]], (err, objs) => {
+                if (Filter && objs) {
                     objs.forEach((o) => Filter(o));
                 }
                 cb(err, objs);
@@ -29,7 +33,7 @@ let subTable = function (prime_model, sub_table, sub_model) {
             Object.keys(obj).forEach((key) => q += key + "=? , ");
             let pos = q.lastIndexOf(",");
             q = q.substr(0, pos);
-            q += " WHERE " + prime_model.pk + ' = ? AND ' + sub_model.pk + ' = ?';
+            q += " WHERE " + pfk + ' = ? AND ' + sfk + ' = ?';
 
             let params = [];
             Object.keys(obj).forEach((key) => params.push(obj[key]));
@@ -49,7 +53,7 @@ let subTable = function (prime_model, sub_table, sub_model) {
             }
 
             let q = 'DELETE ' + sub_table + ' WHERE ';
-            q += prime_model.pk + ' = ? AND ' + sub_model.pk + ' = ?';
+            q += pfk + ' = ? AND ' + sfk + ' = ?';
 
             let params = [obj[prime_model.pk], obj[sub_model.pk]];
             dbConnector.preparedQuery(q, params, (err, objs) => {

@@ -7,7 +7,7 @@ let storage = express.Router();
 let sqlserver_api = require('../db/sqlserverapi.js');
 let mongooseUtil = require('../db/mongooseUtil');
 
-sqlserver_api.model("Storage", "[dbo].[T_STORAGE]", "NAME");
+
 
 storage.get('/', (req, res) => {
     let st = {};

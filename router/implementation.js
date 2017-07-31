@@ -7,8 +7,6 @@ let implementation = express.Router();
 let sqlserver_api = require('../db/sqlserverapi.js');
 let mongooseUtil = require('../db/mongooseUtil');
 
-sqlserver_api.model("Implementation", "[dbo].[T_IMPLEMENTATION]", "NAME");
-
 implementation.get('/', (req, res) => {
     let imp = {};
     Object.keys(req.query).filter((o) => !o.startsWith('_')).forEach((key) => imp[key] = req.query[key]);

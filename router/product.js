@@ -7,8 +7,6 @@ let product = express.Router();
 let sqlserver_api = require('../db/sqlserverapi.js');
 let mongooseUtil = require('../db/mongooseUtil');
 
-sqlserver_api.model("Product", "[dbo].[T_PRODUCT]", "NAME");
-
 product.get('/', (req, res) => {
     let pro = {};
     Object.keys(req.query).filter((o) => !o.startsWith('_')).forEach((key) => pro[key] = req.query[key]);

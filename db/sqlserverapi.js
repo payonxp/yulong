@@ -6,8 +6,6 @@ let subTable = require("./subtable");
 let util = require("util");
 let sqlserver_api = {};
 
-// TODO: make filter promise
-
 sqlserver_api.model = function (name, table, pk) {
     if (name === null || table === null) {
         console.log("model param is null");
@@ -19,10 +17,14 @@ sqlserver_api.model = function (name, table, pk) {
     m.table = table;
     m.pk = pk;
 
-    m.setupSubTable = function (sub_table, sub_model) {
-        sub_table(this, sub_table, sub_model);
+    /*
+    * Setup sub-table
+    * @param {String} sub-table name
+    * @param {Object} sub-model name
+    * */
+    m.setupSubTable = function (sub_table, sub_model, pfk, sfk) {
+        subTable(m, sub_table, sub_model, pfk, sfk);
     };
-
 
     /*
     * Process SQL-Server Insert
