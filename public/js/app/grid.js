@@ -37,14 +37,18 @@ define( function() {
                 tdh.innerText = key;
                 header.appendChild(tdh);
                 let td = document.createElement("td");
-                td.setAttribute("v-on:click", "showModal=true;current=obj;cache(obj)");
+                td.setAttribute("v-on:click", "");
                 td.innerText = "{{obj." + key + "}}";
                 grid.appendChild(td);
             });
 
             let plus = document.createElement("th");
-            plus.innerHTML = "<button class='btn add-btn' v-on:click='showAdd=true;current={}'>+</button>";
+            plus.innerHTML = "<input name='add' type='image' value='' src='img/add.jpg' v-on:click='showAdd=true;current={}' />";
             header.appendChild(plus);
+
+            let edit = document.createElement("td");
+            edit.innerHTML = "<input name='edit' type='image' value='' src='img/edit.jpg' v-on:click='showModal=true;current=obj;cache(obj)' />";
+            grid.appendChild(edit);
 
             thead.appendChild(tfilter);
             thead.appendChild(header);

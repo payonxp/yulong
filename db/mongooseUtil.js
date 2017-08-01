@@ -13,6 +13,8 @@ let MongooseUtil = {
         }
         delete obj.UpdatedBy;
         delete obj.CreatedBy;
+        delete obj.CreateDate;
+        delete obj.RecordDate;
         delete obj.RowPointer;
         delete obj.NoteExistsFlag;
         delete obj.InWorkflow;
