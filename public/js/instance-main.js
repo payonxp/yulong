@@ -8,7 +8,7 @@ requirejs.config({
     }
 });
 
-requirejs(['app/grid', 'app/modal'], function(grid, modal) {
+requirejs(['app/grid', 'app/modal', 'app/storage'], function(grid, modal, storage) {
     // vue component
     Vue.component('modal', {
         template: '#modal-template'
@@ -17,79 +17,16 @@ requirejs(['app/grid', 'app/modal'], function(grid, modal) {
     let url = '/instance';
     let name = 'instance';
 
-    let Storage = {
-        fetch: function(ins) {
-            let result;
-            $.ajax({
-                type: 'GET',
-                url: url,
-                dataType: 'json',
-                async: false,
-                data: ins,
-                success: (data) => {
-                    result = data.data;
-                }
-            });
-            return result;
-        },
-        add: function(ins) {
-            $.ajax({
-                type: 'POST',
-                url: url + "/add",
-                dataType: 'json',
-                contentType: 'application/json',
-                data: JSON.stringify(ins),
-                complete: (msg) => {
-                    console.log(msg);
-                    if (msg.responseJSON.msg === "success"){
-                        alert("Add instance success.");
-                        app.$emit("Success", ins);
-                    }
-                }
-            });
-        },
-        update: function(ins, oldIns) {
-            let data = {
-                newIns: ins,
-                oldIns: oldIns
-            };
-            $.ajax({
-                type: 'POST',
-                url: url + "/update",
-                dataType: 'json',
-                contentType: 'application/json',
-                data: JSON.stringify(data),
-                complete: (msg) => {
-                    console.log(msg);
-                    if (msg.responseJSON.msg === "success") {
-                        alert("Update instance success.");
-                        app.$emit("Success", ins);
-                    }
-                }
-            });
-        },
-        del: function(ins) {
-            $.ajax({
-                type: 'POST',
-                url: url + "/delete",
-                dataType: 'json',
-                contentType: 'application/json',
-                data: JSON.stringify(ins),
-                complete: (msg) => {
-                    console.log(msg);
-                    if (msg.responseJSON.msg === "success") {
-                        alert("Delete instance success.");
-                        app.$emit("Success", ins);
-                    }
-                }
-            });
-        }
-    };
+    let Storage = storage(url);
+    let CacheStorage = storage(url+'/cache');
+    let DataSourceStorage = storage(url+'/data_source');
+    let RepositoryStorage = storage(url+'/repository');
 
     let app = new Vue({
         el: '#app',
         data: {
             instances : [],
+            subData: [],
             showModal : false,
             showAdd: false,
             current: null,
@@ -146,6 +83,19 @@ requirejs(['app/grid', 'app/modal'], function(grid, modal) {
             cache: function(ins) {
                 this.currentCache = {};
                 Object.keys(ins).forEach((key) => this.currentCache[key] = ins[key]);
+            },
+            sub_query: function (storage, obj) {
+                this.subData = storage.fetch(obj);
+                console.log(this.subData);
+            },
+            sub_add: function (storage, obj) {
+                storage.add(obj);
+            },
+            sub_del: function (storage, obj) {
+                storage.del(obj);
+            },
+            sub_update: function (storage, obj, oldObj) {
+                storage.update(obj, oldObj);
             }
         },
     });

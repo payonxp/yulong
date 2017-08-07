@@ -126,3 +126,21 @@ body {
     width: 100%;
     display: inline-block;
 }
+.sub-table-footer {
+    border-top: 1px solid rgba(0,0,0,0.1);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 250px;
+    width: 100%;
+
+}
+
+.dropdown-box {
+    margin-top: 10px;
+}
+
+#app {
+    height: 100%;
+}
