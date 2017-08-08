@@ -100,7 +100,9 @@ sqlserver_api.model = function (name, table, pk) {
         }
 
         let params = [];
-        Object.keys(obj).forEach((key) => params.push("%"+obj[key]+"%"));
+        if (obj) {
+            Object.keys(obj).forEach((key) => params.push("%" + obj[key] + "%"));
+        }
         dbConnector.preparedQuery(generateSelectQuery(this.table, obj), params, function(err, objs) {
             if (Filter && objs) {
                 objs.forEach((o) => Filter(o));
