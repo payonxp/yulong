@@ -8,9 +8,10 @@ tableMgr["Product"] = sqlserver_api.model("Product", "[dbo].[T_PRODUCT]", "NAME"
 tableMgr["DataConnection"] = sqlserver_api.model("DataConnection", "[dbo].[T_DATA_CONNECTION]", "NAME");
 tableMgr["Implementation"] = sqlserver_api.model("Implementation", "[dbo].[T_IMPLEMENTATION]", "NAME");
 tableMgr["Metadata"] = sqlserver_api.model("Metadata", "[dbo].[T_METADATA]", "NAME");
+tableMgr["CodeBase"] = sqlserver_api.model("CodeBase", "[dbo].[T_CODE_BASE]", "NAME");
 
 tableMgr.Instance.setupSubTable("T_INSTANCE_CACHE", tableMgr.Metadata, "INSTANCE", "METADATA");
-tableMgr.Instance.setupSubTable("T_INSTANCE_DATA_SOURCE", tableMgr.DataConnection, "INSTANCE", "DATA_CONNECTION");
-tableMgr.Instance.setupSubTable("T_INSTANCE_REPOSITORY", tableMgr.Storage, "INSTANCE", "CODE_BASE");
+tableMgr.Instance.setupSubTable("T_INSTANCE_DATASOURCE", tableMgr.DataConnection, "INSTANCE", "DATA_CONNECTION");
+tableMgr.Instance.setupSubTable("T_INSTANCE_REPOSITORY", tableMgr.CodeBase, "INSTANCE", "CODE_BASE");
 
 module.exports = tableMgr;

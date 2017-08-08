@@ -7,8 +7,9 @@ define( function() {
         * @param {DOM Object} table node
         * @param {Object} data object
         * @param {String} vue data key
+        * @param {Boolean} enable filter bar, default to true
         * */
-        initGrid: function (table, obj, collection) {     // generate vue template for table
+        initGrid: function (table, obj, collection, enable_filter) {     // generate vue template for table
             if (obj === null || table === null) {
                 return;
             }
@@ -37,7 +38,7 @@ define( function() {
                 tdh.innerText = key;
                 header.appendChild(tdh);
                 let td = document.createElement("td");
-                td.setAttribute("v-on:click", "");
+                td.setAttribute("v-on:click", "$emit('select', obj)");
                 td.innerText = "{{obj." + key + "}}";
                 grid.appendChild(td);
             });
@@ -50,7 +51,9 @@ define( function() {
             edit.innerHTML = "<input name='edit' type='image' value='' src='img/edit.jpg' v-on:click='showModal=true;current=obj;cache(obj)' />";
             grid.appendChild(edit);
 
-            thead.appendChild(tfilter);
+            if (!enable_filter === false) {
+                thead.appendChild(tfilter);
+            }
             thead.appendChild(header);
             tbody.appendChild(grid);
 

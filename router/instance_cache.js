@@ -24,9 +24,9 @@ instance_cache.get('/', (req, res) => {
 
 instance_cache.post('/update', (req, res) => {
     let ins = {};
-    Object.keys(req.body.newIns).filter((o) => !o.startsWith('_')).forEach((key) => ins[key] = req.body.newIns[key]);
+    Object.keys(req.body.newObj).filter((o) => !o.startsWith('_')).forEach((key) => ins[key] = req.body.newObj[key]);
     let oldIns = {};
-    Object.keys(req.body.oldIns).filter((o) => !o.startsWith('_')).forEach((key) => oldIns[key] = req.body.oldIns[key]);
+    Object.keys(req.body.oldObj).filter((o) => !o.startsWith('_')).forEach((key) => oldIns[key] = req.body.oldObj[key]);
     tableMgr.Instance.Metadata.update(ins, oldIns, (err, data) => {
         if (err) {
             res.send(JSON.stringify({

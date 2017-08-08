@@ -13,7 +13,7 @@ let subTable = function (prime_model, sub_table, sub_model, pfk, sfk) {
             }
 
             let q = "SELECT * FROM " + sub_model.table;
-            q += "WHERE " + sub_model.table + "." + sub_model.pk + " in (";
+            q += " WHERE " + sub_model.table + "." + sub_model.pk + " in (";
             q += "SELECT " + sub_table + "." + sfk + " FROM " + sub_table;
             q += " WHERE " + sub_table + "." + pfk + " = ? )";
 

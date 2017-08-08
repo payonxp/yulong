@@ -7,7 +7,7 @@ let mongooseUtil = require('../db/mongooseUtil');
 instance_repository.get('/', (req, res) => {
     let ins = {};
     Object.keys(req.query).filter((o) => !o.startsWith('_')).forEach((key) => ins[key] = req.query[key]);
-    tableMgr.Instance.Storage.find(ins, (err, objs) => {
+    tableMgr.Instance.CodeBase.find(ins, (err, objs) => {
         if (err) {
             res.send(JSON.stringify({
                 msg: "error",
@@ -19,15 +19,15 @@ instance_repository.get('/', (req, res) => {
                 data: objs
             }));
         }
-    });
+    }, mongooseUtil.Filter);
 });
 
 instance_repository.post('/update', (req, res) => {
     let ins = {};
-    Object.keys(req.body.newIns).filter((o) => !o.startsWith('_')).forEach((key) => ins[key] = req.body.newIns[key]);
+    Object.keys(req.body.newObj).filter((o) => !o.startsWith('_')).forEach((key) => ins[key] = req.body.newObj[key]);
     let oldIns = {};
-    Object.keys(req.body.oldIns).filter((o) => !o.startsWith('_')).forEach((key) => oldIns[key] = req.body.oldIns[key]);
-    tableMgr.Instance.Storage.update(ins, oldIns, (err, data) => {
+    Object.keys(req.body.oldObj).filter((o) => !o.startsWith('_')).forEach((key) => oldIns[key] = req.body.oldObj[key]);
+    tableMgr.Instance.CodeBase.update(ins, oldIns, (err, data) => {
         if (err) {
             res.send(JSON.stringify({
                 msg: "error",
@@ -45,7 +45,7 @@ instance_repository.post('/update', (req, res) => {
 instance_repository.post('/add', (req, res) => {
     let ins = {};
     Object.keys(req.body).filter((o) => !o.startsWith('_')).forEach((key) => ins[key] = req.body[key]);
-    tableMgr.Instance.Storage.add(ins, (err, data) => {
+    tableMgr.Instance.CodeBase.add(ins, (err, data) => {
         if (err) {
             res.send(JSON.stringify({
                 msg: "error",
@@ -63,7 +63,7 @@ instance_repository.post('/add', (req, res) => {
 instance_repository.post('/delete', (req, res) => {
     let ins = {};
     Object.keys(req.body).filter((o) => !o.startsWith('_')).forEach((key) => ins[key] = req.body[key]);
-    tableMgr.Instance.Storage.del(ins, (err, data) => {
+    tableMgr.Instance.CodeBase.del(ins, (err, data) => {
         if (err) {
             res.send(JSON.stringify({
                 msg: "error",
