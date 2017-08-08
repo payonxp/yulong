@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Instance</title>
+    <title>Implementation</title>
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/main.css">
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script src="js/lib/bootstrap.min.js"></script>
     <script src="https://unpkg.com/vue@2.3.0/dist/vue.js"></script>
     <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
-    <script data-main="js/instance-main.js" src="js/lib/require.js"></script>
+    <script data-main="js/implementation-main.js" src="js/lib/require.js"></script>
 
 </head>
 <body>
@@ -81,17 +81,7 @@
         </button>
     </div>
     </modal>
-    <table id="instance" class="table table-hover table-condensed"></table>
-    <div class="sub-table-footer">
-        <select name="select" v-model="currentSubTable" @change="$emit('showSubTable')">
-            <option value="cache" selected="selected">Cache</option>
-            <option value="data-source">Data Source</option>
-            <option value="repository">Repository</option>
-        </select>
-        <table id="sub-table-cache" v-show="showSubTable.Cache" class="table table-hover table-condensed"></table>
-        <table id="sub-table-data-source" v-show="showSubTable.DataSource" class="table table-hover table-condensed"></table>
-        <table id="sub-table-repository" v-show="showSubTable.Repository" class="table table-hover table-condensed"></table>
-    </div>
+    <table id="implementation" class="table table-hover table-condensed"></table>
 </div>
 </body>
 </html>

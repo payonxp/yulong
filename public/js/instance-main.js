@@ -46,7 +46,7 @@ requirejs(['app/grid', 'app/modal', 'app/storage'], function(grid, modal, storag
         },
         created: function () {
             let data = Storage.fetch();
-            grid.initGrid(document.getElementById(name), data[0], "instances");
+            grid.initGrid(document.getElementById(name), data[0], "instances", true);
             modal.initModal(document.getElementById("edit-modal"), data[0]);
             modal.initModal(document.getElementById("add-modal"), data[0]);
             this.instances = data;
