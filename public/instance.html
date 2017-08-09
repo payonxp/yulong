@@ -55,7 +55,7 @@
 </div>
 <div id="app" class="col-md-11">
     <modal v-if="showModal">
-        <h3 slot="header">Instance Edit</h3>
+        <h3 slot="header">Edit</h3>
         <div slot="body" id="edit-modal"></div>
         <div slot="footer">
             <button class="modal-delete-button btn btn-danger" @click="$emit('delete', current)">
@@ -69,7 +69,7 @@
             </button>
         </div>
     </modal>
-    <modal v-if="showAdd">
+    <modal v-if="showAddInstance">
     <h3 slot="header">Instance Add</h3>
     <div slot="body" id="add-modal"></div>
     <div slot="footer">

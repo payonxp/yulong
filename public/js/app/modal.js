@@ -7,6 +7,11 @@ define( function () {
            if (obj === null || modal === null) {
                return;
            }
+
+           while (modal.hasChildNodes()) {
+               modal.removeChild(modal.firstChild);
+           }
+
            Object.keys(obj).filter((o) => !o.startsWith('_')).forEach((key) => {
                 let div = document.createElement("div");
                 let label = document.createElement("label");

@@ -44,7 +44,7 @@ define( function() {
             });
 
             let plus = document.createElement("th");
-            plus.innerHTML = "<input name='add' type='image' value='' src='img/add.jpg' v-on:click='showAdd=true;current={}' />";
+            plus.innerHTML = "<input name='add' type='image' value='' src='img/add.jpg' v-on:click='showAddInstance=true;current={}' />";
             header.appendChild(plus);
 
             let edit = document.createElement("td");

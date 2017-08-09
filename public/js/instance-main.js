@@ -28,7 +28,7 @@ requirejs(['app/grid', 'app/modal', 'app/storage'], function(grid, modal, storag
             instances : [],
             subData: [],
             showModal : false,
-            showAdd: false,
+            showAddInstance: false,
             current: null,
             currentCache: null,
             currentSubTable: null,
@@ -81,6 +81,7 @@ requirejs(['app/grid', 'app/modal', 'app/storage'], function(grid, modal, storag
                 obj = {};
                 Object.keys(this.currentCache).forEach((key) => obj[key] = this.currentCache[key] );
                 this.showModal = false;
+                this.query();
             });
             this.$on('update', function(obj) {
                 this.update(obj, this.currentCache);
@@ -88,10 +89,10 @@ requirejs(['app/grid', 'app/modal', 'app/storage'], function(grid, modal, storag
             });
             this.$on('add', function (obj) {
                 this.add(obj);
-                this.showAdd = false;
+                this.showAddInstance = false;
             });
             this.$on('close-add', function (obj) {
-                this.showAdd = false;
+                this.showAddInstance = false;
             });
             this.$on('filter', function () {
                 this.query(this.Filter);
@@ -139,19 +140,6 @@ requirejs(['app/grid', 'app/modal', 'app/storage'], function(grid, modal, storag
                 this.currentCache = {};
                 Object.keys(ins).forEach((key) => this.currentCache[key] = ins[key]);
             },
-            sub_query: function (storage, obj) {
-                this.subData = storage.fetch(obj);
-                console.log(this.subData);
-            },
-            sub_add: function (storage, obj) {
-                storage.add(obj);
-            },
-            sub_del: function (storage, obj) {
-                storage.del(obj);
-            },
-            sub_update: function (storage, obj, oldObj) {
-                storage.update(obj, oldObj);
-            }
         },
     });
 });
